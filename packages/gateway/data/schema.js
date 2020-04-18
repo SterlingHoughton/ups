@@ -3,7 +3,7 @@ const { gql } = require('apollo-server-express');
 exports.typeDefs = gql`
   type Query {
     mails: [Mail]
-    mail(subject: String!, receiver: String!): Mail
+    mail(id: String!): Mail
   }
 
   type Mutation {
