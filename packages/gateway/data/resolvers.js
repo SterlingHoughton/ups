@@ -1,31 +1,16 @@
-const mockMails = [
-  {
-    subject: 'Email test 1',
-    receiver: 'test1@test.com',
-    content: 'Hello1'
-  },
-  {
-    subject: 'Email test 2',
-    receiver: 'test2@test.com',
-    content: 'Hello2'
-  },
-  {
-    subject: 'Email test 3',
-    receiver: 'test3@test.com',
-    content: 'Hello3'
-  }
-]
+const axios = require('axios');
+const { dbservice: { port, host } } = require('../config');
+
+const get = async path => (await axios.get(`${host}:${port}/${path}`)).data.payload;
+
+const post = async (path, body) => (await axios.post(`${host}:${port}/${path}`, { ...body })).data.payload;
 
 exports.resolvers = {
   Query: {
-    mails: () => mockMails,
-    mail: (_, args) => console.log(args)
+    mails: () => get('mails'),
+    mail: (_, { id }) => get(`mail/${id}`)
   },
   Mutation: {
-    mail: (_, args) => {
-      mockMails[1] = args;
-
-      return args;
-    }
+    mail: (_, args) => post('mails', args)
   }
 };
